@@ -1,0 +1,126 @@
+tests:
+  -
+    name: Test1
+    file: shell_tests
+    class: ShellTest
+    points: 1
+  -
+    name: Test2
+    file: shell_tests
+    class: ShellTest
+    points: 1
+  -
+    name: Test3
+    file: shell_tests
+    class: ShellTest
+    points: 2
+  -
+    name: Test4
+    file: shell_tests
+    class: ShellTest
+    points: 2
+  -
+    name: Test5
+    file: shell_tests
+    class: ShellTest    
+    points: 5
+  -
+    name: SchedulingTest1
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 2
+  -
+    name: SchedulingTest2
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 2
+  -
+    name: SchedulingTest3
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 2
+  -
+    name: SchedulingTest4
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 3
+  -
+    name: SchedulingTest5
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest6
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest7
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest8
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest9
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest10
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest11
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest12
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest13
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest14
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest15
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest16
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5 
+  -
+    name: SchedulingTest17
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest18
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest19
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
+  -
+    name: SchedulingTest20
+    file: scheduling_tests
+    class: SchedulingTest   
+    points: 5
