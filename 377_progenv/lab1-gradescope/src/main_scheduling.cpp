@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 
   string algorithm     = argv[1];
   string workload_file = argv[2];
-  string output = workload_file + "_output";
+  string output = workload_file + "_" + algorithm + "_output";
   std::ofstream output_file;
   output_file.open (output);
   pqueue_arrival workload = read_workload(workload_file);
