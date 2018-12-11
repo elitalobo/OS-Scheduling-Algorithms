@@ -112,6 +112,8 @@ print(data)
 
 # -------------- GUI begins -----------------
 
+style="Simple,tail_width=0.5,head_width=4,head_length=8"
+kw = dict(arrowstyle=style, color="k")
 
 num_total_jobs = len(data['arrival_queue'][0][0].split(','))
 # num_total_jobs = 30
@@ -141,22 +143,29 @@ offset_x = np.maximum(x_span/2 - square_box_size*num_total_jobs,0)
 offset_y = y_span/2 - 4*square_box_size
 vertical_space_queues = square_box_size
 
+
+x_offset_for_all_queues = offset_x + square_box_size
+y_offset_temp = offset_y + square_box_size
+y_offset_input = offset_y+2*square_box_size+vertical_space_queues
+y_offset_process = offset_y+3*square_box_size+2*vertical_space_queues
+y_offset_finish = offset_y+4*square_box_size+3*vertical_space_queues
+
 for i in range(num_total_jobs):
-	temp_queue[i] = mpatch.Rectangle((offset_x + square_box_size * i + square_box_size, offset_y + square_box_size),
+	temp_queue[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_temp),
 									 square_box_size, square_box_size, fill=False)
-	plt.text(offset_x + square_box_size, offset_y+0.5*square_box_size, "Temp Q", fontsize=8)
+	plt.text(offset_x + square_box_size, y_offset_temp-0.5*square_box_size, "Temp Q", fontsize=8)
 
-	input_order[i] = mpatch.Rectangle((offset_x+square_box_size * i + square_box_size, offset_y+2*square_box_size+vertical_space_queues), square_box_size,
+	input_order[i] = mpatch.Rectangle((x_offset_for_all_queues+square_box_size * i, y_offset_input), square_box_size,
 									  square_box_size, fill=False)
-	plt.text(offset_x + square_box_size, offset_y+1.5*square_box_size+vertical_space_queues, "Arrival Q", fontsize=8)
+	plt.text(offset_x + square_box_size, y_offset_input-0.5*square_box_size, "Arrival Q", fontsize=8)
 
-	processing_jobs[i] = mpatch.Rectangle((offset_x+square_box_size * i + square_box_size, offset_y+3*square_box_size+2*vertical_space_queues), square_box_size,
+	processing_jobs[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_process), square_box_size,
 										  square_box_size, fill=False)
-	plt.text(offset_x + square_box_size, offset_y+2.5*square_box_size+2*vertical_space_queues, "Processing Q", fontsize=8)
+	plt.text(offset_x + square_box_size, y_offset_process-0.5*square_box_size, "Processing Q", fontsize=8)
 
-	finished_jobs[i] = mpatch.Rectangle((offset_x+square_box_size * i + square_box_size, offset_y+4*square_box_size+3*vertical_space_queues), square_box_size,
+	finished_jobs[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_finish), square_box_size,
 										square_box_size, fill=False)
-	plt.text(offset_x + square_box_size, offset_y+3.5*square_box_size+3*vertical_space_queues, "Completed Q", fontsize=8)
+	plt.text(x_offset_for_all_queues, y_offset_finish-0.5*square_box_size, "Completed Q", fontsize=8)
 
 	ax.add_artist(temp_queue[i])
 	ax.add_artist(input_order[i])
@@ -164,6 +173,57 @@ for i in range(num_total_jobs):
 	ax.add_artist(finished_jobs[i])
 
 
+
+arrows = {}
+
+temp_input_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_temp+1),
+							(offset_x,y_offset_input+1),connectionstyle="arc3,rad=-.5", **kw)
+temp_input_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_input+1),
+											(offset_x,y_offset_temp+1),
+											connectionstyle="arc3,rad=.5", **kw)
+
+temp_process_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_temp+1),
+							(offset_x,y_offset_process+1),connectionstyle="arc3,rad=-.5", **kw)
+temp_process_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_process+1),
+							(offset_x,y_offset_temp+1),connectionstyle="arc3,rad=.5", **kw)
+
+temp_finish_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_temp+1),
+							(offset_x,y_offset_finish+1),connectionstyle="arc3,rad=-.5", **kw)
+temp_finish_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_finish+1),
+							(offset_x,y_offset_temp+1),connectionstyle="arc3,rad=.5", **kw)
+
+arrows['temp_queue'] = {'arrival':temp_input_arrow, 'processing':temp_process_arrow, 'complete':temp_finish_arrow}
+
+input_process_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_input+1),
+							(offset_x,y_offset_process+1),connectionstyle="arc3,rad=-.5", **kw)
+input_process_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_process+1),
+							(offset_x,y_offset_input+1),connectionstyle="arc3,rad=.5", **kw)
+
+input_finish_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_input+1),
+							(offset_x,y_offset_finish+1),connectionstyle="arc3,rad=-.5", **kw)
+input_finish_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_finish+1),
+							(offset_x,y_offset_input+1),connectionstyle="arc3,rad=.5", **kw)
+
+arrows['arrival'] = {'temp_queue':temp_input_reverse, 'processing':input_process_arrow, 'complete':input_finish_arrow}
+
+process_finish_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_process+1),
+							(offset_x,y_offset_finish+1),connectionstyle="arc3,rad=-.5", **kw)
+process_finish_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_finish+1),
+							(offset_x,y_offset_process+1),connectionstyle="arc3,rad=.5", **kw)
+
+arrows['processing'] = {'temp_queue':temp_process_reverse, 'arrival':input_process_reverse, 'complete':process_finish_arrow}
+arrows['complete'] = {'temp_queue':temp_finish_reverse, 'arrival':input_finish_reverse, 'processing':process_finish_reverse}
+
+for key1 in arrows:
+	for key2 in arrows[key1]:
+		plt.gca().add_patch(arrows[key1][key2])
+
+
+def preprocessTransitionTask(tran_task):
+	if type(tran_task)==int:
+		return tran_task
+	else:
+		return int(tran_task.replace('task',''))
 
 def preprocessQueue(queue, num_total_jobs):
 	arr = np.ones(num_total_jobs, dtype=np.int8) * -1
@@ -187,6 +247,11 @@ for index, row in data.iterrows():
 	task_in_processor = preprocessQueue(row["task_in_processor"], num_total_jobs)
 	completed_queue = preprocessQueue(row["completed_queue"], num_total_jobs)
 
+	transitioning_task = preprocessTransitionTask(row["transitioning_task"])
+	transitioning_from = row["transition_from"]
+	transitioning_to = row["transition_to"]
+
+
 	ann1Lst, ann2Lst, ann3Lst, ann4Lst = [], [], [], []
 	for i in range(num_total_jobs):
 		finished_x, finished_y = getRectangleCenter(finished_jobs[i])
@@ -204,6 +269,19 @@ for index, row in data.iterrows():
 						   fontsize=12, ha='center', va='center')
 		ann1Lst.append(ann1), ann2Lst.append(ann2), ann3Lst.append(ann3), ann4Lst.append(ann4)
 
+	for an_arrow in arrows:
+		if transitioning_to in arrows[an_arrow] and an_arrow==transitioning_from:
+			arrows[an_arrow][transitioning_to].set_visible(True)
+		else:
+			for key in arrows[an_arrow]:
+				arrows[an_arrow][key].set_visible(False)
+
+
+	# if index == 0:
+	# 	plt.gca().add_patch(a3)
+	# else:
+	# 	if a3.is_figure_set:
+	# 		a3.set_visible(False)
 	plt.pause(1.5)
 
 	# Clear current annotations
