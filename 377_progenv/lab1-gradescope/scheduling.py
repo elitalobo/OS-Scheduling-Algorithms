@@ -6,6 +6,7 @@ from itertools import islice
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import text
 import matplotlib.patches as mpatch
 import numpy as np
 
@@ -113,7 +114,7 @@ print(data)
 
 
 num_total_jobs = len(data['arrival_queue'][0][0].split(','))
-# num_total_jobs = 4
+# num_total_jobs = 30
 
 fig, ax = plt.subplots()
 square_box_size = 8
@@ -143,12 +144,19 @@ vertical_space_queues = square_box_size
 for i in range(num_total_jobs):
 	temp_queue[i] = mpatch.Rectangle((offset_x + square_box_size * i + square_box_size, offset_y + square_box_size),
 									 square_box_size, square_box_size, fill=False)
+	plt.text(offset_x + square_box_size, offset_y+0.5*square_box_size, "Temp Q", fontsize=8)
+
 	input_order[i] = mpatch.Rectangle((offset_x+square_box_size * i + square_box_size, offset_y+2*square_box_size+vertical_space_queues), square_box_size,
 									  square_box_size, fill=False)
+	plt.text(offset_x + square_box_size, offset_y+1.5*square_box_size+vertical_space_queues, "Arrival Q", fontsize=8)
+
 	processing_jobs[i] = mpatch.Rectangle((offset_x+square_box_size * i + square_box_size, offset_y+3*square_box_size+2*vertical_space_queues), square_box_size,
 										  square_box_size, fill=False)
+	plt.text(offset_x + square_box_size, offset_y+2.5*square_box_size+2*vertical_space_queues, "Processing Q", fontsize=8)
+
 	finished_jobs[i] = mpatch.Rectangle((offset_x+square_box_size * i + square_box_size, offset_y+4*square_box_size+3*vertical_space_queues), square_box_size,
 										square_box_size, fill=False)
+	plt.text(offset_x + square_box_size, offset_y+3.5*square_box_size+3*vertical_space_queues, "Completed Q", fontsize=8)
 
 	ax.add_artist(temp_queue[i])
 	ax.add_artist(input_order[i])
@@ -156,8 +164,9 @@ for i in range(num_total_jobs):
 	ax.add_artist(finished_jobs[i])
 
 
+
 def preprocessQueue(queue, num_total_jobs):
-	arr = np.ones(num_total_jobs) * -1
+	arr = np.ones(num_total_jobs, dtype=np.int8) * -1
 	if type(queue) == int:
 		arr[0] = queue
 	elif (len(queue)>0):
