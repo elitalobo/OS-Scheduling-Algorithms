@@ -253,6 +253,7 @@ for index, row in data.iterrows():
 
 
 	ann1Lst, ann2Lst, ann3Lst, ann4Lst = [], [], [], []
+	arrowText = None
 	for i in range(num_total_jobs):
 		finished_x, finished_y = getRectangleCenter(finished_jobs[i])
 		input_x, input_y = getRectangleCenter(input_order[i])
@@ -272,6 +273,9 @@ for index, row in data.iterrows():
 	for an_arrow in arrows:
 		if transitioning_to in arrows[an_arrow] and an_arrow==transitioning_from:
 			arrows[an_arrow][transitioning_to].set_visible(True)
+			x_text = arrows[an_arrow][transitioning_to]._posA_posB[0][0]
+			y_text = (arrows[an_arrow][transitioning_to]._posA_posB[0][1] + arrows[an_arrow][transitioning_to]._posA_posB[1][1])/2
+			arrowText = plt.text(x_text, y_text, str(transitioning_task), fontsize=8)
 		else:
 			for key in arrows[an_arrow]:
 				arrows[an_arrow][key].set_visible(False)
@@ -293,6 +297,8 @@ for index, row in data.iterrows():
 		a.remove()
 	for i, a in enumerate(ann4Lst):
 		a.remove()
+	if arrowText != None:
+		arrowText.remove()
 
 	ann1Lst[:], ann2Lst[:], ann3Lst[:], ann4Lst[:] = [], [], [], []
 
