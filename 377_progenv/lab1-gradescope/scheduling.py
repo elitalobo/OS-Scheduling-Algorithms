@@ -128,13 +128,26 @@ kw = dict(arrowstyle=style, color="k")
 num_total_jobs = len(data['arrival_queue'][0][0].split(','))
 # num_total_jobs = 30
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(1,2,sharey=True)
+
+
+clust_data = np.random.random((num_tasks,4))
+collabel=("name", "arrival time", "total duration", "duration_left")
+ax[0].axis('tight')
+ax[0].axis('off')
+the_table = ax[0].table(cellText=clust_data,colLabels=collabel,loc='center')
+the_table.auto_set_font_size(False)
+the_table.set_fontsize(10)
+the_table.scale(1.2, 2)
+ax[0].plot(clust_data[:,0],clust_data[:,1])
+
+
 square_box_size = 8
 x_span = np.maximum(100, num_total_jobs*square_box_size + 2*square_box_size)
 y_span = 100
-ax.set_xlim((0, x_span))
-ax.set_ylim((0, y_span))
-ax.set_aspect('equal')
+ax[1].set_xlim((0, x_span))
+ax[1].set_ylim((0, y_span))
+ax[1].set_aspect('equal')
 
 temp_queue = [None] * num_total_jobs
 input_order = [None]*num_total_jobs
@@ -178,13 +191,13 @@ for i in range(num_total_jobs):
 										square_box_size, fill=False)
 	plt.text(x_offset_for_all_queues, y_offset_finish-0.5*square_box_size, "Completed Q", fontsize=8)
 
-	ax.add_artist(temp_queue[i])
-	ax.add_artist(input_order[i])
+	ax[1].add_artist(temp_queue[i])
+	ax[1].add_artist(input_order[i])
 
 	# Remove this if more boxes are needed in processing queue. Currently this will show only 1 box.
 	if i == 0:
-		ax.add_artist(processing_jobs[i])
-	ax.add_artist(finished_jobs[i])
+		ax[1].add_artist(processing_jobs[i])
+	ax[1].add_artist(finished_jobs[i])
 
 
 
@@ -253,6 +266,12 @@ def preprocessQueue(queue, num_total_jobs):
 
 	return arr
 
+# the_table = ax.table(cellText='something',
+#                       rowLabels=1,
+#                       rowColours='white',
+#                       colLabels=4,
+#                       loc='top')
+
 # Simulate process scheduling
 for index, row in data.iterrows():
 	print (row["arrival_queue"], row["temp_queue"], row["task_in_processor"], row["completed_queue"])
@@ -265,6 +284,13 @@ for index, row in data.iterrows():
 	transitioning_from = row["transition_from"]
 	transitioning_to = row["transition_to"]
 
+	dict_table = the_table.get_celld()
+	for i in range(1, num_tasks+1):
+		dict_table[(i, 0)].get_text().set_text(task_list[index][i-1][0])
+		dict_table[(i, 1)].get_text().set_text(task_list[index][i-1][1])
+		dict_table[(i, 2)].get_text().set_text(task_list[index][i-1][2])
+		dict_table[(i, 3)].get_text().set_text(task_list[index][i-1][3])
+		# dict_table[(i, 4)].get_text().set_text('something')
 
 	ann1Lst, ann2Lst, ann3Lst, ann4Lst = [], [], [], []
 	arrowText = None
@@ -274,13 +300,13 @@ for index, row in data.iterrows():
 		temp_x, temp_y = getRectangleCenter(temp_queue[i])
 		processing_x, processing_y = getRectangleCenter(processing_jobs[i])
 
-		ann1 = ax.annotate(completed_queue[i] if completed_queue[i]>=0 else '', (finished_x, finished_y), color='b', weight='bold',
+		ann1 = ax[1].annotate(completed_queue[i] if completed_queue[i]>=0 else '', (finished_x, finished_y), color='b', weight='bold',
 						   fontsize=12, ha='center', va='center')
-		ann2 = ax.annotate(arrival_queue[i] if arrival_queue[i]>=0 else '', (input_x, input_y), color='b', weight='bold',
+		ann2 = ax[1].annotate(arrival_queue[i] if arrival_queue[i]>=0 else '', (input_x, input_y), color='b', weight='bold',
 						   fontsize=12, ha='center', va='center')
-		ann3 = ax.annotate(temp_q[i] if temp_q[i]>=0 else '', (temp_x, temp_y), color='b', weight='bold',
+		ann3 = ax[1].annotate(temp_q[i] if temp_q[i]>=0 else '', (temp_x, temp_y), color='b', weight='bold',
 						   fontsize=12, ha='center', va='center')
-		ann4 = ax.annotate(task_in_processor[i] if task_in_processor[i] >= 0 else '', (processing_x, processing_y), color='b', weight='bold',
+		ann4 = ax[1].annotate(task_in_processor[i] if task_in_processor[i] >= 0 else '', (processing_x, processing_y), color='b', weight='bold',
 						   fontsize=12, ha='center', va='center')
 		ann1Lst.append(ann1), ann2Lst.append(ann2), ann3Lst.append(ann3), ann4Lst.append(ann4)
 
