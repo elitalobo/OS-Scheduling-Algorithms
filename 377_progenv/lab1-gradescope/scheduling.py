@@ -116,8 +116,8 @@ data.columns = ['timestamp', 'arrival_queue', 'temp_queue', 'task_in_processor',
 task_data = pd.DataFrame(task_list)
 print(task_data)
 print(data)
-data.to_csv('results/'+input_file+'_'+algorithm+'_output.csv')
-exit(0)
+# data.to_csv('results/'+input_file+'_'+algorithm+'_output.csv')
+# exit(0)
 
 
 # -------------- GUI begins -----------------
@@ -206,7 +206,7 @@ temp_finish_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_temp+1),
 temp_finish_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_finish+1),
 							(offset_x,y_offset_temp+1),connectionstyle="arc3,rad=.5", **kw)
 
-arrows['temp_queue'] = {'arrival':temp_input_arrow, 'processing':temp_process_arrow, 'complete':temp_finish_arrow}
+arrows['temp'] = {'arrival':temp_input_arrow, 'processing':temp_process_arrow, 'complete':temp_finish_arrow}
 
 input_process_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_input+1),
 							(offset_x,y_offset_process+1),connectionstyle="arc3,rad=-.5", **kw)
@@ -218,15 +218,15 @@ input_finish_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_input+1),
 input_finish_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_finish+1),
 							(offset_x,y_offset_input+1),connectionstyle="arc3,rad=.5", **kw)
 
-arrows['arrival'] = {'temp_queue':temp_input_reverse, 'processing':input_process_arrow, 'complete':input_finish_arrow}
+arrows['arrival'] = {'temp':temp_input_reverse, 'processing':input_process_arrow, 'complete':input_finish_arrow}
 
 process_finish_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_process+1),
 							(offset_x,y_offset_finish+1),connectionstyle="arc3,rad=-.5", **kw)
 process_finish_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_finish+1),
 							(offset_x,y_offset_process+1),connectionstyle="arc3,rad=.5", **kw)
 
-arrows['processing'] = {'temp_queue':temp_process_reverse, 'arrival':input_process_reverse, 'complete':process_finish_arrow}
-arrows['complete'] = {'temp_queue':temp_finish_reverse, 'arrival':input_finish_reverse, 'processing':process_finish_reverse}
+arrows['processing'] = {'temp':temp_process_reverse, 'arrival':input_process_reverse, 'complete':process_finish_arrow}
+arrows['complete'] = {'temp':temp_finish_reverse, 'arrival':input_finish_reverse, 'processing':process_finish_reverse}
 
 for key1 in arrows:
 	for key2 in arrows[key1]:
@@ -300,7 +300,7 @@ for index, row in data.iterrows():
 	# else:
 	# 	if a3.is_figure_set:
 	# 		a3.set_visible(False)
-	plt.pause(1.5)
+	plt.pause(0.5)
 
 	# Clear current annotations
 	for i, a in enumerate(ann1Lst):
