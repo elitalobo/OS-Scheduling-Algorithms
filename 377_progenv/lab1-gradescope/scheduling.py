@@ -130,9 +130,10 @@ num_total_jobs = len(data['arrival_queue'][0][0].split(','))
 
 fig, ax = plt.subplots(1,2,sharey=True)
 
-
 clust_data = np.random.random((num_tasks,4))
-collabel=("name", "arrival time", "total duration", "duration_left")
+collabel=("Task Name", "Arrival Time", "Total Duration", "Duration Left")
+# ax[0].set_title('Task metadata')
+ax[1].set_title('Scheduling queues')
 ax[0].axis('tight')
 ax[0].axis('off')
 the_table = ax[0].table(cellText=clust_data,colLabels=collabel,loc='center')
@@ -175,20 +176,20 @@ y_offset_finish = offset_y+4*square_box_size+3*vertical_space_queues
 
 for i in range(num_total_jobs):
 	temp_queue[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_temp),
-									 square_box_size, square_box_size, fill=False)
+									 square_box_size, square_box_size, fill=False, color='orange')
 	plt.text(offset_x + square_box_size, y_offset_temp-0.5*square_box_size, "Arrival Q", fontsize=8)
 
 	input_order[i] = mpatch.Rectangle((x_offset_for_all_queues+square_box_size * i, y_offset_input), square_box_size,
-									  square_box_size, fill=False)
+									  square_box_size, fill=False, color='r')
 	plt.text(offset_x + square_box_size, y_offset_input-0.5*square_box_size, "Task list", fontsize=8)
 
 
 	processing_jobs[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_process), square_box_size,
-											  square_box_size, fill=False)
+											  square_box_size, fill=False, color='brown')
 	plt.text(offset_x + square_box_size, y_offset_process-0.5*square_box_size, "Processing Q", fontsize=8)
 
 	finished_jobs[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_finish), square_box_size,
-										square_box_size, fill=False)
+										square_box_size, fill=False, color='g')
 	plt.text(x_offset_for_all_queues, y_offset_finish-0.5*square_box_size, "Completed Q", fontsize=8)
 
 	ax[1].add_artist(temp_queue[i])
@@ -315,7 +316,7 @@ for index, row in data.iterrows():
 			arrows[an_arrow][transitioning_to].set_visible(True)
 			x_text = arrows[an_arrow][transitioning_to]._posA_posB[0][0]
 			y_text = (arrows[an_arrow][transitioning_to]._posA_posB[0][1] + arrows[an_arrow][transitioning_to]._posA_posB[1][1])/2
-			arrowText = plt.text(x_text, y_text, str(transitioning_task), fontsize=8)
+			arrowText = plt.text(x_text, y_text, str(transitioning_task), fontsize=10)
 		else:
 			for key in arrows[an_arrow]:
 				arrows[an_arrow][key].set_visible(False)
