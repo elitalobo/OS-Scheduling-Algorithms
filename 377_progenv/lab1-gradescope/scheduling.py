@@ -21,6 +21,9 @@ class Task():
 		return 'Task '+self.name.split('task')[1]+' - Arrival Time: '+self.arrival_time+ \
 			   ', Total Duration: '+self.total_duration+', Remaining Duration: '+self.duration_left
 
+	def getDetails(self):
+		return [self.name, self.arrival_time, self.total_duration, self.duration_left]
+
 if len(sys.argv)==3:
 	algorithm = sys.argv[1]
 	input_file = sys.argv[2]
@@ -51,6 +54,7 @@ s = subprocess.call(['./scheduling', algorithm, 'workloads/'+input_file])
 print('-----------')
 
 data = []
+task_list = []
 with open('workloads/'+input_file+'_'+algorithm+'_output') as f:
 	pro = -1
 	row1 = f.readline().strip('\n')
@@ -96,6 +100,8 @@ with open('workloads/'+input_file+'_'+algorithm+'_output') as f:
 			dat = [t, [r for r in row6], [r for r in row7], pro, [r for r in row8], row2[0], row4, row5]
 			data.append(dat)
 
+			task_list.append([t.getDetails() for t in tasks])
+
 			row1 = f.readline().strip('\n')
 		else:
 			avg_turnaround_time = float(row1.split('Time: ')[1])
@@ -105,9 +111,11 @@ with open('workloads/'+input_file+'_'+algorithm+'_output') as f:
 
 data = pd.DataFrame(data)
 data.columns = ['timestamp', 'arrival_queue', 'temp_queue', 'task_in_processor', 'completed_queue', 'transitioning_task', 'transition_from', 'transition_to']
-
+task_data = pd.DataFrame(task_list)
+print(task_data)
 print(data)
-
+# data.to_csv('results/'+input_file+'_'+algorithm+'_output.csv')
+# exit(0)
 
 
 # -------------- GUI begins -----------------
