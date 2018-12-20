@@ -95,6 +95,8 @@ with open('workloads/'+input_file+'_'+algorithm+'_output') as f:
 
 			if row5=='processing':
 				pro = row2[0].split('task')[1]
+			else:
+				pro = -1
 
 			# timestamp, arrival_queue, temp_queue, index of task in processor, completed_queue, transitioning_task, transition_from, transition_to
 			dat = [t, [r for r in row6], [r for r in row7], pro, [r for r in row8], row2[0], row4, row5]
