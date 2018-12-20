@@ -177,7 +177,7 @@ void show_processes(list<Process> processes)
   while (!xs.empty())
   {
     Process p = xs.front();
-    cout << "\tarrival=" << p.arrival << ", duration=" << p.duration
+    cout << "\tarrival=" << p.arrival <<  ",actual duration: " << p.actual_duration << ", duration=" << p.duration
          << ", first_run=" << p.first_run << ", completion=" << p.completion << endl;
     xs.pop_front();
   }
@@ -231,8 +231,9 @@ list<Process> sjf(pqueue_arrival workload,ofstream &output_file)
   int t = 0;
   print_state(output_file,t,workload,complete);
 
-  while (!workload.empty())
+  while ((!workload.empty() || !duration_workload.empty()))
   {
+	
     // Get processes that have arrived
     while (!workload.empty() && workload.top().arrival <= t)
     {
@@ -246,7 +247,7 @@ list<Process> sjf(pqueue_arrival workload,ofstream &output_file)
     while (!duration_workload.empty())
     {
       Process p = duration_workload.top();
-
+	cout << p.name << " " << p.duration << endl;
       duration_workload.pop();
       print_state(output_file,t,p,p.duration,workload,complete,TEMP,PROCESSING,duration_workload);
 
@@ -261,7 +262,7 @@ list<Process> sjf(pqueue_arrival workload,ofstream &output_file)
 
       complete.push_back(p);
       print_state(output_file,t,p,-1,workload,complete,PROCESSING,COMPLETE,duration_workload);
-
+      break;
     }
   }
   print_state(output_file,t,workload,complete,duration_workload);
