@@ -114,8 +114,8 @@ with open('workloads/'+input_file+'_'+algorithm+'_output') as f:
 data = pd.DataFrame(data)
 data.columns = ['timestamp', 'arrival_queue', 'temp_queue', 'task_in_processor', 'completed_queue', 'transitioning_task', 'transition_from', 'transition_to']
 task_data = pd.DataFrame(task_list)
-print(task_data)
-print(data)
+# print(task_data)
+# print(data)
 # data.to_csv('results/'+input_file+'_'+algorithm+'_output.csv')
 # exit(0)
 
@@ -163,11 +163,11 @@ y_offset_finish = offset_y+4*square_box_size+3*vertical_space_queues
 for i in range(num_total_jobs):
 	temp_queue[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_temp),
 									 square_box_size, square_box_size, fill=False)
-	plt.text(offset_x + square_box_size, y_offset_temp-0.5*square_box_size, "Temp Q", fontsize=8)
+	plt.text(offset_x + square_box_size, y_offset_temp-0.5*square_box_size, "Arrival Q", fontsize=8)
 
 	input_order[i] = mpatch.Rectangle((x_offset_for_all_queues+square_box_size * i, y_offset_input), square_box_size,
 									  square_box_size, fill=False)
-	plt.text(offset_x + square_box_size, y_offset_input-0.5*square_box_size, "Arrival Q", fontsize=8)
+	plt.text(offset_x + square_box_size, y_offset_input-0.5*square_box_size, "Task list", fontsize=8)
 
 
 	processing_jobs[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_process), square_box_size,
@@ -300,7 +300,7 @@ for index, row in data.iterrows():
 	# else:
 	# 	if a3.is_figure_set:
 	# 		a3.set_visible(False)
-	plt.pause(0.5)
+	plt.pause(1)
 
 	# Clear current annotations
 	for i, a in enumerate(ann1Lst):
