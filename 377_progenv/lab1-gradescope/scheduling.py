@@ -159,8 +159,9 @@ for i in range(num_total_jobs):
 									  square_box_size, fill=False)
 	plt.text(offset_x + square_box_size, y_offset_input-0.5*square_box_size, "Arrival Q", fontsize=8)
 
+
 	processing_jobs[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_process), square_box_size,
-										  square_box_size, fill=False)
+											  square_box_size, fill=False)
 	plt.text(offset_x + square_box_size, y_offset_process-0.5*square_box_size, "Processing Q", fontsize=8)
 
 	finished_jobs[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_finish), square_box_size,
@@ -169,7 +170,10 @@ for i in range(num_total_jobs):
 
 	ax.add_artist(temp_queue[i])
 	ax.add_artist(input_order[i])
-	ax.add_artist(processing_jobs[i])
+
+	# Remove this if more boxes are needed in processing queue. Currently this will show only 1 box.
+	if i == 0:
+		ax.add_artist(processing_jobs[i])
 	ax.add_artist(finished_jobs[i])
 
 
