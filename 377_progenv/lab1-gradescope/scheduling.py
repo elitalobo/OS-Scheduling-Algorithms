@@ -132,8 +132,9 @@ fig, ax = plt.subplots(1,2,sharey=True)
 
 clust_data = np.random.random((num_tasks,4))
 collabel=("Task Name", "Arrival Time", "Total Duration", "Duration Left")
-# ax[0].set_title('Task metadata')
-ax[1].set_title('Scheduling queues')
+# ax[0].set_title('Task metadata', loc='left')
+# ax[0].set_xlabel('time (s)', verticalalignment='baseline')
+# ax[1].set_title('Scheduling queues')
 ax[0].axis('tight')
 ax[0].axis('off')
 the_table = ax[0].table(cellText=clust_data,colLabels=collabel,loc='center')
@@ -141,6 +142,13 @@ the_table.auto_set_font_size(False)
 the_table.set_fontsize(10)
 the_table.scale(1.2, 2)
 ax[0].plot(clust_data[:,0],clust_data[:,1])
+
+ax[0].text(0.5, 0.8, "Task Metadata for Algorithm: "+algorithm.upper(), size=12, ha="center",
+         transform=ax[0].transAxes)
+ax[0].text(0.5, 0.14, "Final Average Turnaround Time = "+str(avg_turnaround_time), size=12, ha="center",
+         transform=ax[0].transAxes)
+ax[0].text(0.5, 0.07, "Final Average Response Time = "+str(avg_response_time), size=12, ha="center",
+         transform=ax[0].transAxes)
 
 
 square_box_size = 8
@@ -169,15 +177,15 @@ vertical_space_queues = square_box_size
 
 
 x_offset_for_all_queues = offset_x + square_box_size
-y_offset_temp = offset_y + square_box_size
-y_offset_input = offset_y+2*square_box_size+vertical_space_queues
+y_offset_input = offset_y + square_box_size
+y_offset_arrival = offset_y + 2 * square_box_size + vertical_space_queues
 y_offset_process = offset_y+3*square_box_size+2*vertical_space_queues
 y_offset_finish = offset_y+4*square_box_size+3*vertical_space_queues
 
 for i in range(num_total_jobs):
-	temp_queue[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_temp),
+	temp_queue[i] = mpatch.Rectangle((x_offset_for_all_queues + square_box_size * i, y_offset_arrival),
 									 square_box_size, square_box_size, fill=False, color='orange')
-	plt.text(offset_x + square_box_size, y_offset_temp-0.5*square_box_size, "Arrival Q", fontsize=8)
+	plt.text(offset_x + square_box_size, y_offset_arrival - 0.5 * square_box_size, "Arrival Q", fontsize=8)
 
 	input_order[i] = mpatch.Rectangle((x_offset_for_all_queues+square_box_size * i, y_offset_input), square_box_size,
 									  square_box_size, fill=False, color='r')
@@ -204,21 +212,21 @@ for i in range(num_total_jobs):
 
 arrows = {}
 
-temp_input_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_temp+1),
-							(offset_x,y_offset_input+1),connectionstyle="arc3,rad=-.5", **kw)
+temp_input_arrow = mpatch.FancyArrowPatch((offset_x, y_offset_arrival + 1),
+										  (offset_x,y_offset_input+1), connectionstyle="arc3,rad=.5", **kw)
 temp_input_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_input+1),
-											(offset_x,y_offset_temp+1),
-											connectionstyle="arc3,rad=.5", **kw)
+											(offset_x, y_offset_arrival + 1),
+											connectionstyle="arc3,rad=-.5", **kw)
 
-temp_process_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_temp+1),
-							(offset_x,y_offset_process+1),connectionstyle="arc3,rad=-.5", **kw)
+temp_process_arrow = mpatch.FancyArrowPatch((offset_x, y_offset_arrival + 1),
+											(offset_x,y_offset_process+1), connectionstyle="arc3,rad=-.5", **kw)
 temp_process_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_process+1),
-							(offset_x,y_offset_temp+1),connectionstyle="arc3,rad=.5", **kw)
+											  (offset_x, y_offset_arrival + 1), connectionstyle="arc3,rad=.5", **kw)
 
-temp_finish_arrow = mpatch.FancyArrowPatch((offset_x,y_offset_temp+1),
-							(offset_x,y_offset_finish+1),connectionstyle="arc3,rad=-.5", **kw)
+temp_finish_arrow = mpatch.FancyArrowPatch((offset_x, y_offset_arrival + 1),
+										   (offset_x,y_offset_finish+1), connectionstyle="arc3,rad=-.5", **kw)
 temp_finish_reverse = mpatch.FancyArrowPatch((offset_x,y_offset_finish+1),
-							(offset_x,y_offset_temp+1),connectionstyle="arc3,rad=.5", **kw)
+											 (offset_x, y_offset_arrival + 1), connectionstyle="arc3,rad=.5", **kw)
 
 arrows['temp'] = {'arrival':temp_input_arrow, 'processing':temp_process_arrow, 'complete':temp_finish_arrow}
 
